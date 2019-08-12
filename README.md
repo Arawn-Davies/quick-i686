@@ -6,11 +6,11 @@ I made this build script locally before uploading it here, that's so I don't hav
 If you just want a bog-standard i686-elf-gcc cross compiler with binutils and GDB too, then simply run:  
 ```
 git clone https://github.com/Arawn-Davies/unattended-cross-compiler/ && cd unattended-cross-compiler  
-chmod +x you-build-me-up  
-./you-build-me-up  
+chmod +x you-build-me-up.sh  
+./you-build-me-up.sh  
 ```  
   
 If you don't even want to bother cloning the source, 'cause you're that so much of a 1337 h4ck3r, then run:  
 ```  
-sh -c "$(wget https://raw.githubusercontent.com/Arawn-Davies/unattended-cross-compiler/master/you-build-me-up -O -)"  
+sh -c "$(wget https://raw.githubusercontent.com/Arawn-Davies/unattended-cross-compiler/master/you-build-me-up.sh -O -)"  
 ```  
