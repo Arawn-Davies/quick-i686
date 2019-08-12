@@ -81,6 +81,7 @@ function main() {
 
 #	for arg in "$@"
 #	do
+	arg=$1
 	    if [ "$arg" == "--clean" ] || [ "$arg" == "-c" ]
 	    then
 	        echo "Cleaning up files..."
