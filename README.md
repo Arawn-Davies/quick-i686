@@ -12,5 +12,5 @@ chmod +x you-build-me-up.sh
   
 If you don't even want to bother cloning the source, 'cause you're that so much of a 1337 h4ck3r, then run:  
 ```  
-sh -c "$(wget https://raw.githubusercontent.com/Arawn-Davies/unattended-cross-compiler/master/you-build-me-up.sh -O -)"  
+wget https://raw.githubusercontent.com/Arawn-Davies/unattended-cross-compiler/master/you-build-me-up.sh && chmod +x you-build-me-up.sh && ./you-build-me-up.sh
 ```  
