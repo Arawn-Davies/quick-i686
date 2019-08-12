@@ -79,8 +79,8 @@ function cleanUp {
 
 function main() {
 
-	for arg in "$@"
-	do
+#	for arg in "$@"
+#	do
 	    if [ "$arg" == "--clean" ] || [ "$arg" == "-c" ]
 	    then
 	        echo "Cleaning up files..."
@@ -104,7 +104,7 @@ function main() {
 		
 			cleanUp
 		fi
-	done
+#	done
 }
 
 main $@
