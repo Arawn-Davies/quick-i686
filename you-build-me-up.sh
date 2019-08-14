@@ -15,12 +15,12 @@ function SetVars {
 }
 
 function mkdirs {
-	mkdir i686-elf-src
+	mkdir -p i686-elf-src
 	cd i686-elf-src 
 	# Make directories
-	mkdir build-binutils
-	mkdir build-gcc
-	mkdir build-gdb
+	mkdir -p build-binutils
+	mkdir -p build-gcc
+	mkdir -p build-gdb
 }
 
 function DownloadSources {
