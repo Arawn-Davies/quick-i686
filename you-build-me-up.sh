@@ -1,9 +1,18 @@
 #!/bin/bash
 set -e
 
+# Set the versions of the assembler,
+# compiler and debugger to download & build
+
 BINUTILS_VERSION="2.32"
 GCC_VERSION="9.1.0"
 GDB_VERSION="8.3"
+
+# Archive type, xz has smaller size but extracts longer, gz opposite 
+# Choose 'xz' if you're low on disk space, or have bad internet, 
+# or 'gz' if you've got time to kill
+
+AT="gz"
 
 cd $HOME
 
@@ -21,18 +30,29 @@ function mkdirs {
 	mkdir -p build-binutils
 	mkdir -p build-gcc
 	mkdir -p build-gdb
+	mkdir -p $HOME/.i686-elf
 }
 
 function DownloadSources {
 	# Download sources
-	wget -c https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VERSION.tar.gz
-	wget -c https://ftp.gnu.org/gnu/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.gz
-	wget -c https://ftp.gnu.org/gnu/gdb/gdb-$GDB_VERSION.tar.gz
+	wget -c https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VERSION.tar.$AT
+	wget -c https://ftp.gnu.org/gnu/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.$AT
+	wget -c https://ftp.gnu.org/gnu/gdb/gdb-$GDB_VERSION.tar.$AT
+
+	if [ "$AT" == "gz" ]	
+	then
+		for filename in *.tar.gz
+		do
+			tar -xvzf $filename
+		done
+	elif [ "$AT" == "xz" ]
+	then
 	
-	for filename in *.tar.gz
-	do
-		tar -xvzf $filename
-	done
+		for filename in *tar.xz
+		do
+			tar -xvf $filename
+		done
+	fi
 
 	# Download GCC prerequisites
 	cd gcc-*/
