@@ -10,7 +10,7 @@ chmod +x deploy.sh
 ./deploy.sh  
 ```  
   
-If you don't even want to bother cloning the source, 'cause you're that so much of a 1337 h4ck3r, then run:  
+For a one-line deployment, simply run the following:  
 ```  
 wget https://raw.githubusercontent.com/Arawn-Davies/ucc/master/deploy.sh && chmod +x deploy.sh && ./deploy.sh
 ```  
