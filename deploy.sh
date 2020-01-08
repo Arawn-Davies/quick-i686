@@ -60,7 +60,7 @@ function DownloadSources {
 	fi
 
 	echo -e "\e[92mDownload GCC prerequisites"
-	cd "gcc-*/"
+	cd gcc-*/
 	contrib/download_pre*
 	cd ..
 }
