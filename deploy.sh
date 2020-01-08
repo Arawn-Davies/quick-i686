@@ -12,7 +12,7 @@ GDB_VERSION="8.3"
 # Choose 'xz' if you're low on disk space, or have bad internet, 
 # or 'gz' if you've got time to kill
 
-AT="xz"
+AT="gz"
 
 cd $HOME
 
@@ -52,17 +52,15 @@ function DownloadSources {
 		done
 	elif [ "$AT" == "xz" ]
 	then
-	
-		for filename in *tar.xz
+		for filename in *.tar.xz
 		do	
-echo lmao
-`		        echo -e "\e[92m Extracting tar.xz archive..."
+		        echo -e "\e[92m Extracting tar.xz archive..."
 			tar -xvf $filename
 		done
 	fi
 
 	echo -e "\e[92mDownload GCC prerequisites"
-	cd gcc-*/
+	cd "gcc-*/"
 	contrib/download_pre*
 	cd ..
 }
