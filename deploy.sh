@@ -4,9 +4,9 @@ set -e
 # Set the versions of the assembler,
 # compiler and debugger to download & build
 
-BINUTILS_VERSION="2.33.1"
-GCC_VERSION="9.2.0"
-GDB_VERSION="8.3"
+BINUTILS_VERSION="2.34"
+GCC_VERSION="10.1.0"
+GDB_VERSION="9.2"
 
 # Archive type, xz has smaller size but extracts longer, gz opposite 
 # Choose 'xz' if you're low on disk space, or have bad internet, 
