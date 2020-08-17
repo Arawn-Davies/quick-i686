@@ -12,7 +12,7 @@ GDB_VERSION="9.2"
 # Choose 'xz' if you're low on disk space, or have bad internet, 
 # or 'gz' if you've got time to kill
 
-AT="xz"
+AT="gz"
 
 cd $HOME
 
