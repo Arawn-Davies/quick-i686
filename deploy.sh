@@ -54,14 +54,14 @@ function DownloadSources {
 		for filename in *.tar.gz
 		do	
 		        echo -e "\033[92m Extracting tar.gz archive...\033[0m"
-			#tar -xvzf $filename
+			tar -xvzf $filename
 		done
 	elif [ "$AT" == "xz" ]
 	then
 		for filename in *.tar.xz
 		do	
 		        echo -e "\033[92m Extracting tar.xz archive...\033[0m"
-			#tar -xvf $filename
+			tar -xvf $filename
 		done
 	fi
 
