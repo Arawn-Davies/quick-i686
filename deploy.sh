@@ -8,11 +8,17 @@ BINUTILS_VERSION="2.35"
 GCC_VERSION="10.2.0"
 GDB_VERSION="9.2"
 
+# Number of jobs = Number of CPU Cores + 1
+cpus=$(getconf _NPROCESSORS_ONLN)
+cpus=$((cpus+1))
+export MAKEFLAGS="-j "$cpus
+
+
 # Archive type, xz has smaller size but extracts longer, gz opposite 
 # Choose 'xz' if you're low on disk space, or have bad internet, 
 # or 'gz' if you've got time to kill
 
-AT="gz"
+AT="xz"
 
 cd $HOME
 
