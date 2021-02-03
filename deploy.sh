@@ -4,9 +4,9 @@ set -e
 # Set the versions of the assembler,
 # compiler and debugger to download & build
 
-BINUTILS_VERSION="2.35"
+BINUTILS_VERSION="2.35.2"
 GCC_VERSION="10.2.0"
-GDB_VERSION="9.2"
+GDB_VERSION="10.1"
 
 # Number of jobs = Number of CPU Cores + 1
 cpus=$(getconf _NPROCESSORS_ONLN)
