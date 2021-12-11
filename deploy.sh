@@ -124,17 +124,24 @@ function main() {
 		SetVars
 		mkdirs
 		DownloadSources
-	else		
+	elif [ "$arg" == "makegdb" ]
+	then
+		echo -e "\033[92mMaking GDB\033[0m"
+		SetVars
+		mkdirs
+		MakeGDB
+		cleanUp
+	else
 	        echo -e "\033[92mRunning normally\033[0m"
 		SetVars
 		mkdirs
-			
+
 		DownloadSources
 
 		MakeBinutils
 		MakeGCC
 		MakeGDB
-		
+
 		cleanUp
 	fi
 }
