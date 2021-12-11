@@ -131,9 +131,6 @@ function main() {
 		SetVars
 		mkdirs
 		DownloadSources
-	elif [ "$arg" == "persist" ]
-	then
-		persistVars
 	elif [ "$arg" == "makebin" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils\033[0m"
@@ -141,7 +138,6 @@ function main() {
 		mkdirs
 		MakeGDB
 		cleanUp
-	else
 	elif [ "$arg" == "makegcc" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils + GCC\033[0m"
@@ -150,7 +146,6 @@ function main() {
 		MakeBinutils
 		MakeGCC
 		cleanUp
-	else
 	elif [ "$arg" == "makegdb" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils + GDB\033[0m"
@@ -159,11 +154,21 @@ function main() {
 		MakeBinutils
 		MakeGDB
 		cleanUp
+	elif [ "$arg" == "nopersist" ]
+	then
+                SetVars
+                mkdirs
+                DownloadSources
+                MakeBinutils
+                MakeGCC
+                MakeGDB
+
+                cleanUp
 	else
 	        echo -e "\033[92mRunning normally\033[0m"
 		SetVars
 		mkdirs
-
+		persistVars
 		DownloadSources
 
 		MakeBinutils
