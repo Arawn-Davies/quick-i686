@@ -30,6 +30,13 @@ function SetVars {
 	export PATH="$PREFIX/bin:$PATH"
 }
 
+function persistVars {
+	echo "#compiler target arch variables for i686-elf-* (OSDev)"
+	echo 'export PREFIX="$HOME/.i686-elf/"' >> $HOME/.bashrc
+	echo "export TARGET=i686-elf" >> $HOME/.bashrc
+	echo 'export PATH="$PREFIX/bin:$PATH"' >> $HOME/.bashrc
+}
+
 function mkdirs {
 	
         echo -e "\033[92mCreating directories...\033[0m"
@@ -53,14 +60,14 @@ function DownloadSources {
 	then
 		for filename in *.tar.gz
 		do	
-		        echo -e "\033[92m Extracting tar.gz archive...\033[0m"
+		    echo -e "\033[92m Extracting tar.gz archive...\033[0m"
 			tar -xvzf $filename
 		done
 	elif [ "$AT" == "xz" ]
 	then
 		for filename in *.tar.xz
 		do	
-		        echo -e "\033[92m Extracting tar.xz archive...\033[0m"
+		    echo -e "\033[92m Extracting tar.xz archive...\033[0m"
 			tar -xvf $filename
 		done
 	fi
@@ -124,11 +131,32 @@ function main() {
 		SetVars
 		mkdirs
 		DownloadSources
-	elif [ "$arg" == "makegdb" ]
+	elif [ "$arg" == "persist" ]
 	then
-		echo -e "\033[92mMaking GDB\033[0m"
+		persistVars
+	elif [ "$arg" == "makebin" ]
+	then
+		echo -e "\033[92mMaking i686 Binutils\033[0m"
 		SetVars
 		mkdirs
+		MakeGDB
+		cleanUp
+	else
+	elif [ "$arg" == "makegcc" ]
+	then
+		echo -e "\033[92mMaking i686 Binutils + GCC\033[0m"
+		SetVars
+		mkdirs
+		MakeBinutils
+		MakeGCC
+		cleanUp
+	else
+	elif [ "$arg" == "makegdb" ]
+	then
+		echo -e "\033[92mMaking i686 Binutils + GDB\033[0m"
+		SetVars
+		mkdirs
+		MakeBinutils
 		MakeGDB
 		cleanUp
 	else
