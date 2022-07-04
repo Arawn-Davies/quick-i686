@@ -151,11 +151,11 @@ function MakeBinutils {
 	    if [ $OUTPUT == false ]
     then
         ../binutils-$BINUTILS_VERSION/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror > binutils-configure.txt > /dev/null
-        make -j$(nproc) > binutils-make.txt > /dev/null 
+        make > binutils-make.txt > /dev/null 
 	    make install > binutils-install.txt > /dev/null
 	else
         ../binutils-$BINUTILS_VERSION/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror > binutils-configure.txt
-        make -j$(nproc) > binutils-make.txt
+        make > binutils-make.txt
 	    make install > binutils-install.txt
     fi
 	cd ..
@@ -167,8 +167,8 @@ function MakeGCC {
 	which -- $TARGET-as || echo $TARGET-as is not in the PATH
 	cd build-gcc
 	../gcc-$GCC_VERSION/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++,go --without-headers > gcc-configure.txt
-	make all-gcc -j$(nproc) >  all-gcc.txt 
-	make all-target-libgcc -j$(nproc) > all-target-libgcc.txt
+	make all-gcc >  all-gcc.txt 
+	make all-target-libgcc > all-target-libgcc.txt
 	make install-gcc > install-gcc.txt
 	make install-target-libgcc > install-target-libgcc.txt
 	cd ..
@@ -179,7 +179,7 @@ function MakeGDB {
     echo -e "\033[92mConfigure, build and install GDB\033[0m"
 	cd build-gdb
 	../gdb-$GDB_VERSION/configure --target=$TARGET --disable-nls --disable-werror --prefix=$PREFIX > gdb-configure.txt
-	make -j$(nproc) > gdb-make.txt
+	make > gdb-make.txt
 	make install > gdb-install.txt
 	cd ..
 }
