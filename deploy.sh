@@ -1,24 +1,48 @@
 #!/bin/bash
 set -e
 
-# Set the versions of the assembler,
-# compiler and debugger to download & build
-
+# Set the versions of the assembler, compiler and debugger to download & build
 BINUTILS_VERSION="2.37"
 GCC_VERSION="11.2.0"
 GDB_VERSION="11.1"
+
+# Boolean whether to print command output to stdout
 OUTPUT=true
-# Number of jobs = Number of CPU Cores + 1
-export MAKEFLAGS="-j$(nproc)"
 
-
-# Archive type, xz has smaller size but extracts longer, gz opposite 
-# Choose 'xz' if you're low on disk space, or have bad internet, 
-# or 'gz' if you've got time to kill
-
+# Archive type, xz uses LZMA compression, gz uses GZIP compression 
+# Choose 'xz' if you're low on disk space, or have a metered/slow internet connection
+# or 'gz' if you've got a fast internet connection and want faster decompression times
 AT="gz"
 
-cd $HOME
+# Number of jobs = Number of CPU Cores + 1
+export MAKEFLAGS="-j$JOBS"
+
+function CheckOS {
+    if [ $(uname) == "Darwin" ]; then
+        OS="MacOS"
+        JOBS=$(sysctl -n hw.ncpu)
+    elif [ $(uname) == "Linux" ]; then
+        OS="Linux"
+        JOBS=$(nproc)
+    fi
+
+    if [ $OS == "MacOS" ]
+    then
+        echo -e "\033[92mYou appear to be running macOS, which requires the Xcode command line tools to be installed. Checking to see if developer tools are installed...\033[0m"
+        if xcode-select --install 2>&1 | grep -q "installed"; then
+            echo "Xcode is installed, continuing..."
+        else
+            echo -e "\033[92mThis tool can either call the Xcode installer, or you can choose to install it manually.\033[0m"
+            echo "Press any key to continue, or CTRL-C to exit."
+            read -n 1
+            echo "Launching Xcode Installer now..."
+            xcode-select --install
+            exit 1
+
+        fi
+        
+    fi
+}
 
 function pause {
     read -s -n 1 -p "Press any key to continue . . ."
@@ -51,6 +75,9 @@ function mkdirs {
 	mkdir -p build-gdb
 	mkdir -p $HOME/.i686-elf
 }
+
+
+
 
 function DownloadSources () {
     
@@ -113,6 +140,8 @@ function DownloadSources () {
 	cd ..
 }
 
+
+
 # Onto the main build!
 
 function MakeBinutils {
@@ -157,57 +186,61 @@ function MakeGDB {
 
 function cleanUp {
 
-        echo -e "\033[92mCleaning up source files...\033[0m"
+    echo -e "\033[92mCleaning up source files...\033[0m"
 	rm -rf i686-elf-src
 }
 
 function main() {
 
+    pushd $HOME
 	arg=$1
-    if [ "$*" == "silent" ]
+    CheckOS
+    
+    if [ "$*" == "--silent" ]
     then
         OUTPUT=false
     fi
+
     if [ "$arg" == "--clean" ] || [ "$arg" == "-c" ]
 	then
 		cleanUp
-	elif [ "$arg" == "--download" ] || [ "$arg" == "-dl" ]
+        exit
+	fi
+
+    SetVars
+	mkdirs
+    
+    if [ "$arg" == "--download" ] || [ "$arg" == "-dl" ]
 	then
-		SetVars
-		mkdirs
 		DownloadSources
+        exit
 	elif [ "$arg" == "makebin" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils\033[0m"
-		SetVars
-		mkdirs
+        DownloadSources
 		MakeGDB
-		cleanUp
+		
 	elif [ "$arg" == "makegcc" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils + GCC\033[0m"
-		SetVars
-		mkdirs
-		MakeBinutils
+		DownloadSources
+        MakeBinutils
 		MakeGCC
-		cleanUp
+		
 	elif [ "$arg" == "makegdb" ]
 	then
 		echo -e "\033[92mMaking i686 Binutils + GDB\033[0m"
-		SetVars
-		mkdirs
+        DownloadSources
 		MakeBinutils
 		MakeGDB
-		cleanUp
+		
 	elif [ "$arg" == "nopersist" ]
 	then
-                SetVars
-                mkdirs
-                DownloadSources
-                MakeBinutils
-                MakeGCC
-                MakeGDB
-                cleanUp
+        DownloadSources
+        MakeBinutils
+        MakeGCC
+        MakeGDB
+        
     else
 	    if [ $OUTPUT == false ]
         then
@@ -215,8 +248,6 @@ function main() {
         else
             echo -e "\033[92mRunning normally...\033[0m"
 		fi
-        SetVars
-		mkdirs
 		persistVars
 		DownloadSources
 
@@ -224,8 +255,11 @@ function main() {
 		MakeGCC
 		MakeGDB
 
-		cleanUp
+		
 	fi
+    cleanUp
+    popd
+    exit
 }
 
 main $@
